@@ -1,12 +1,18 @@
+import { connectReduxDevtools } from 'mst-middlewares';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
+import { Provider, rootStore } from './stores/root.store';
+
+connectReduxDevtools(require('remotedev'), rootStore);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider value={rootStore}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
