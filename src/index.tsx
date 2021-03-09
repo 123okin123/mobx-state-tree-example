@@ -2,9 +2,10 @@ import { connectReduxDevtools } from 'mst-middlewares';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import { Provider } from './hooks/use-mst';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { Provider, rootStore } from './stores/root.store';
+import { rootStore } from './stores/root.store';
 
 connectReduxDevtools(require('remotedev'), rootStore);
 

@@ -1,32 +1,43 @@
 import {
+  Box,
+  Button,
   Checkbox,
   Container,
-  Fab,
   IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
+  TextField,
 } from '@material-ui/core';
 import { Add, Delete } from '@material-ui/icons';
-import { useMst } from './stores/root.store';
-import { ITodoModel } from './stores/todos/todo.model';
 import { observer } from 'mobx-react-lite';
+import { ChangeEvent, useState } from 'react';
+import { useMst } from './hooks/use-mst';
+import { ITodoModel } from './stores/todos/todo.model';
 
 const App = observer(() => {
   const { todosStore } = useMst();
+  const [newTodoText, setNewTodoText] = useState('');
 
   const onCheckboxClicked = (todo: ITodoModel) => {
     todo.toggle();
   };
 
   const addTodo = () => {
-    todosStore.addTodo('test todo ' + Math.round(Math.random() * 10));
+    todosStore.addTodo(newTodoText);
+    setNewTodoText('');
   };
 
   const removeTodo = (todo: ITodoModel) => {
     todosStore.removeTodo(todo);
+  };
+
+  const handleNewTodoTextChange = (
+    event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setNewTodoText(event.target.value);
   };
 
   return (
@@ -64,9 +75,27 @@ const App = observer(() => {
         })}
       </List>
 
-      <Fab onClick={addTodo}>
-        <Add />
-      </Fab>
+      <Box display='flex' alignItems='center'>
+        <Box mr={3}>
+          <TextField
+            margin='dense'
+            id='outlined-basic'
+            label='New Todo'
+            variant='outlined'
+            value={newTodoText}
+            onChange={handleNewTodoTextChange}
+          />
+        </Box>
+        <Button
+          disabled={!newTodoText}
+          variant='contained'
+          color='primary'
+          onClick={addTodo}
+          endIcon={<Add />}
+        >
+          Add
+        </Button>
+      </Box>
     </Container>
   );
 });
